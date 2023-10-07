@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Nurture</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/9488693da4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section>
+        <h2>Tree Canopy Predictor</h2>
+    </section>
+<section>
+<h1>Land Suitability Predictor</h1>
+
+    {% if suggested_crops is not defined %}
+    <form action="/predict" method="post">
+        <label for="temperature">Average Temperature (°C):</label>
+        <input type="number" step="0.01" id="temperature" name="temperature" required><br><br>
+         
+        <label for="rainfall">Average Annual Rainfall (mm):</label>
+        <input type="number" step="0.01" id="rainfall" name="rainfall" required><br><br>
+         
+        <label for="soil_type">Soil Type (Sandy, Loamy, or Clayey):</label>
+        <input type="text" id="soil_type" name="soil_type" required><br><br>
+        <input type="submit" value="Predict Suitable Crops">
+    </form>
+    {% endif %}
+
+    {% if suggested_crops %}
+        <h2>Suggested Suitable Crops:</h2>
+<ul>
+    {% for crop in suggested_crops %}
+        <li>{{ crop }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Latitude and Longitude:</h2>
+<p id="latitude">Latitude: </p>
+<p id="longitude">Longitude: </p>
+
+    {% elif message is defined %}
+        <p>{{ message }}</p>
+    {% endif %}
+</section>
+    </body>
+    </html>
+
+<!-- Add a script to obtain latitude and longitude values from the first code snippet -->
+<script>
+    // Assuming you have received latitude and longitude from the first code snippet
+    const latitude = /* Get latitude from the first code */;
+    const longitude = /* Get longitude from the first code */;
+
+    // Call the function with the latitude and longitude values
+    updateLatLong(latitude, longitude);
+</script>
+

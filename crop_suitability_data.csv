@@ -1,0 +1,6 @@
+Crop_Name,Min_Temperature,Max_Temperature,Min_Rainfall,Max_Rainfall,Soil_Type
+Wheat,18,25,500,800,"0,1"
+Maize,25,30,700,1000,"1,2"
+Rice,28,35,1000,1500,"2"
+Sorghum,30,40,600,900,"0"
+Potato,20,28,400,700,"0,1"

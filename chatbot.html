@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurture Chatbot</title>
+    
+
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            background-image: url("img/earthpic.jpg");
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            max-width: 500px;
+            margin: 20px auto;
+            background-color: #fff;
+        
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+            
+ 
+        }
+
+        .chat-header {
+            background-color: #014a01;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .chat-messages {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .user-message {
+            background-color: #6a9f7a;
+            color: #fff;
+            text-align: right;
+        }
+
+        .bot-message {
+            background-color: #f0f0f0;
+            color: #014a01; 
+            text-align: left;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .user-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .send-button {
+            background-color: #014a01;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .bot-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-image: url('https://i.ibb.co/RNFsnF1/nurture.png');
+            background-size: cover;
+        }
+        
+        
+        #startVoiceButton {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px; 
+        }
+
+        
+        #startVoiceButton img {
+            width: 35px; 
+            height: 40px;
+        }
+
+
+        
+
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">Nurture Chatbot</div>
+        <div class="chat-messages">
+            <div class="message bot-message typing-message" id="typing-indicator" style="display: none;">
+                <div class="bot-avatar"></div>
+                
+                 &nbsp;&nbsp;&nbsp;&nbsp; <em> <br> Nurture is typing...
+               
+            </div>
+        </div>
+        <div class="input-container">
+    <input type="text" class="user-input" placeholder="Type your message...">
+    <button class="send-button" onclick="sendMessage()"><strong>Send</strong></button>
+    <button class="send-button" id="startVoiceButton" onclick="startVoiceInput()">
+    <img src="https://i.ibb.co/8x8kJBp/2282210.png" alt="Voice Input Logo">
+
+
+
+</button>
+
+        </div>
+    </div>
+
+    <script>
+       
+        const qaPairs = [
+            { question: "Hello", answer: "Hi There! Welcome to Nurture!. <br>           Tell me how can i help you?" },
+            { question: "Hi",answer: 'Hi There! Welcome to Nurture!.<br> Tell me how can I help you?'  },
+            { question: "How can you assist me?", answer: "I can provide information and answer your questions." },
+            { question: "Rice Bangladesh", answer: '<a href="https://en.wikipedia.org/wiki/Rice_production_in_Bangladesh" target="_blank">Rice Production in Bangladesh</a>' },
+            
+            { question: "maize usa", answer: '<a href="https://en.wikipedia.org/wiki/Corn_production_in_the_United_States"target="_blank">Maize Production in USA </a>' },
+            
+    
+            
+        ];
+
+        
+function sendMessage() {
+    const userInput = document.querySelector(".user-input");
+    const userMessage = userInput.value.trim();
+
+    if (userMessage !== "") {
+       
+        const typingIndicator = document.getElementById("typing-indicator");
+        typingIndicator.style.display = "flex";
+
+        setTimeout(function() {
+            
+            typingIndicator.style.display = "none";
+
+            
+            const chatMessages = document.querySelector(".chat-messages");
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.classList.add("message", "user-message");
+            userMessageDiv.textContent = `You: ${userMessage}`;
+            chatMessages.appendChild(userMessageDiv);
+
+           
+            const botMessage = findResponse(userMessage.toLowerCase());
+            const botMessageDiv = document.createElement("div");
+            botMessageDiv.classList.add("message", "bot-message");
+            botMessageDiv.innerHTML = `<strong>Nurture: ${botMessage}`;
+            chatMessages.appendChild(botMessageDiv);
+
+           
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            
+            userInput.value = "";
+        }, 600); 
+    }
+}
+
+
+
+        // Function to find a response based on tokenized input
+        function findResponse(userMessage) {
+            for (const qaPair of qaPairs) {
+                const keywords = qaPair.question.toLowerCase().split(" ");
+                                if (keywords.some(keyword => userMessage.includes(keyword))) {
+                    return qaPair.answer;
+                }
+            }
+            return  "Sorry, I do not have the exact answer to your query right now!!I'm currently under training and not yet fully functional.";
+        }
+        let recognition; // Declare a variable to hold the recognition object
+
+    // Function to start voice input
+    function startVoiceInput() {
+        const startVoiceButton = document.getElementById('startVoiceButton');
+        startVoiceButton.textContent = 'Listening...';
+
+        // Create a new recognition object
+        recognition = new webkitSpeechRecognition();
+        recognition.lang = 'en-US'; // Set the language for recognition
+
+        // Handle recognized speech
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            document.querySelector(".user-input").value = transcript; // Fill the input field with the transcribed text
+            recognition.stop();
+            startVoiceButton.textContent = 'Start Voice Input';
+        };
+
+        // Start speech recognition
+        recognition.start();
+    }
+
+
+        // Listen for Enter key press in the input field
+        const userInput = document.querySelector(".user-input");
+        userInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

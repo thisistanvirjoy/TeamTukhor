@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Nurture</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/9488693da4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section id="header">
+        <div class="logo">
+            <a href="first.html"><img src="img/nurture.png" width="130" height="130"></a>
+        </div>       <div>
+            <ul id="navbar">
+                <li><a class="shop" href=" ">Crop</a></li>
+                <li><a class="fp" href=" ">Nature Data</a></li>
+                <li><a class="about" href="about.html">About</a></li>
+                <li><a class="con" href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </section>
+    <section id="picture">
+        <h1>Welcome to Nurture</h1>
+        <p>Your go-to Nature Solution!</p>
+        <button class="normal" onclick="window.location.href=' ';">Learn more</button>
+    </section>
+    <section id="element" class="section1">
+        <div class="box">
+            <img src="img/crop.png" alt="">
+            <h6><a class="con" href="http://localhost/NASA/Predictor/mapclick.html" style="text-decoration:none;color:white;">Suitable crop for you</a></h6>
+        </div>
+        <div class="box">
+            <img src="img/cond.png" alt="">
+            <h6><a class="con" href="http://localhost/NASA/Predictor/index.html" style="text-decoration:none;color:white;">Nature Condition</h6>
+        </div>
+        <div class="box">
+            <img src="img/Data.png" alt="">
+            <h6>Raw data</h6>
+        </div>
+        <div class="box">
+            <img src="img/bot.png" alt="">
+            <h6><a class="con" href="http://localhost/NASA/Predictor/chatbot.html" style="text-decoration:none;color:white;">Chat</a></h6>
+        </div>
+    </section>
+    <section id="newsletter" class="section1">
+        <div class="newstext">
+            <h4>Sign up for the Newsletter!!</h4>
+            <h3>Get the latest updates!!</h3>
+            <p> <span></span></p>
+        </div>
+        <div class="form">
+            <input type="text" placeholder="Your E-mail Address"/>
+            <button class="normal">Sign up</button>
+        </div>
+    </section>
+    <footer class="section1">
+        <div class="col">
+            <img class="logo" src="img/nurture.png" />
+            <h4>Contact</h4>
+            <p><strong>Address:</strong>Chittagong, Bangladesh.</p>
+            <p><strong>Phone:</strong>+8801823456789.</p>
+            <p><strong>Hours:</strong>24h/7d.</p>
+            <div class="follow">
+                <h4>Follow us</h4>
+                <div class="icon">
+                    <a href="https://youtu.be/ZrA19_nHdaU?si=15NF1ywIj96QlOjK"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="about.html">About us</a>
+            <a href="#">Privacy Policy</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="#">Sign In</a>
+            <a href="#">Help</a>
+        </div>
+        <div class="copyright">
+            <p>©2023, Team TUKHOR.</p>
+        </div>
+    </footer>
+</body>
+</html>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300&display=swap');
+
+ body{
+     width:100%;
+ }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Red Hat Display', sans-serif;
+}
+h1{
+    font-size:50px;
+    line-height:64px;
+    color:rgb(244, 246, 243);
+
+}
+
+h2 {
+    font-size: 46px;
+    line-height: 54px;
+    color: #222;
+}
+h3 {
+    font-size: 18px;
+    line-height: 54px;
+    color: #fbf5f5;
+}
+
+h4 {
+    text-align:center;
+    font-size: 16px;
+    font-weight:700;
+}
+
+h6 {
+    text-align:center;
+    font-size: 18px;
+    font-weight:700;
+}
+
+#h7{
+    text-align:center;
+    font-size: 15px;
+    font-weight:700; 
+}
+.nav_text{
+    font-size: 50px;
+    color: rgb(41, 120, 7);
+
+}
+p {
+    font-size: 16px;
+    margin:15px 0 20px 0;
+    color: darkgray;
+}
+
+.center_pic{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+.center{
+    margin: auto;
+    width: 50%;
+    padding:10px 5px;
+}
+.section1{
+    padding:40px 80px;
+}
+
+#header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 50px;
+    background:rgba(253, 253, 250, 0.925);
+    box-shadow:0 5px 15px rgb(128, 128, 128);
+    z-index:999;
+    position:sticky;
+}
+#navbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+    #navbar li 
+    {
+        list-style: none;
+        padding:0 20px;
+        position:relative;
+    }
+    #navbar li a
+    {
+        text-decoration: none;
+        font-size: 16px;
+        font-weight:bold;
+        color:rgb(40, 62, 4);
+    
+    }
+        #navbar li a:hover,
+            #navbar li a.active 
+            {
+                color:crimson;
+                transition: 0.5s ease;
+            }
+
+                #navbar li a.active:after,
+                #navbar li a:hover:after {
+                    content: "";
+                    width: 30px;
+                    height: 2px;
+                    background: crimson;
+                    position: absolute;
+                    bottom: -5px;
+                    left: 20px;
+                }
+            #navbar li a.nav-link-50::after {
+                width: 20px;
+                left: 18px;
+            }
+
+            #navbar li a.home::after {
+                width: 45px;
+                left: 18px;
+            }
+            #navbar li a.shop::after {
+                width: 40px;
+                left: 18px;
+            }
+
+            #navbar li a.about::after {
+                width: 45px;
+                left: 18px;
+            }
+            #navbar li a.con::after {
+                width: 60px;
+                left: 18px;
+            }
+
+            #navbar li a.fp::after {
+                width: 85px;
+                left: 18px;
+            }
+
+#picture {
+        background-image: url("img/home page.png");
+        height: 90vh;
+        width: 100%;
+        background-size: cover;
+        background-position: top 25% right 50%;
+        padding: 0 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+    }
+
+
+    #picture h1 
+    {
+        color: rgb(160, 237, 73);
+        font-weight:rgb(24, 88, 15)older;
+        text-shadow: 0px 2px 3px grey;
+        font-size:75px;      
+    }
+    #picture p 
+    {
+        color: white;
+        font-weight: bolder;
+        font-size: 40px;
+    }
+
+    #picture button 
+    {
+        background-color: transparent;
+        border: 5px solid #bab4b4;
+        color: #bab4b4;
+        font-size: 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 10px 10px;
+    }
+        #picture button:hover 
+        {
+            border: 5px solid white;
+            color: white;
+            transition: 0.2s ease-in-out;
+            transform:scale(1.1);
+        }
+
+#element
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+    #element .box 
+    {
+        width: 180px;
+        text-align: center;
+        padding: 25px 15px;
+        box-shadow: 15px 15px 25px rgb(128, 128, 128);
+        border-radius: 10px;
+        margin: 15px 0;
+        cursor:pointer;
+    }
+        #element .box:hover 
+        {
+            box-shadow: 10px 10px 54px rgb(128, 128, 128);
+        }
+        #element .box h6 
+        {
+            display: inline-block;
+            padding: 9px 8px 6px 8px;
+            line-height: 1;
+            border-radius: 20px;
+            color: rgb(249, 249, 249);
+            background-color:#24850e;
+            font-size:15px;
+            font-weight:900;
+        }
+        #element .box img 
+        {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+#newsletter 
+{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    background-image: url("img/crop2.png");
+    background-repeat: no-repeat;
+    background-position: 0% 0%;
+    background-color: rgb(251, 247, 247);
+}
+    #newsletter h4 
+    {
+        font-size:26px;
+        font-weight:900;
+        color:rgb(251, 248, 248);
+    }
+    #newsletter .form 
+    {
+        display: flex;
+        width: 40%;
+    }
+    #newsletter input 
+    {
+        height: 3.125rem;
+        padding: 0 1.25em;
+        font-size: 14px;
+        width: 100%;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        outline: none;
+        border-top-right-radius:0;
+        border-bottom-right-radius:0;
+    }
+    #newsletter button 
+    {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        background-color: crimson;
+        color: white;
+        white-space: nowrap;
+        border:1px solid crimson;
+        padding: 0px 20px;
+    }
+
+        #newsletter button:hover 
+        {
+            color:crimson;
+            background-color:white;
+            transition:0.2s ease;
+        }
+footer
+{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+ }
+    footer .col
+    {
+        display: flex;
+        flex-direction:column;
+        align-items:flex-start;
+        margin-bottom:20px;
+    }
+    footer .logo 
+    {
+        height: 130px;
+        width: 130px;
+        margin-bottom: 15px;
+    }
+    footer h4
+    {
+        margin-top:8px;
+        margin-bottom:8px;
+    }
+    footer p 
+    {
+        color:#8d8d8d;
+        font-size:18px;
+        margin-bottom: 8px;
+    }
+    footer a 
+    {
+        font-size:18px;
+        margin-bottom: 8px;
+        text-decoration:none;
+        color:black;
+    }
+        footer a:hover 
+        {
+            color: crimson;
+            transition: 0.2s ease;
+            transform: scale(1.2);
+        }
+    footer .follow i 
+    {
+        color: darkslategrey;
+        padding-right: 8px;
+        padding-top: 8px;
+        cursor: pointer;
+    }
+        footer .follow i:hover 
+        {
+            color: crimson;
+            transition: 0.2s ease;
+            transform: scale(1.3);
+        }
+    footer.install.row img 
+    {
+        border:1px solid crimson;
+        border-radius:6px;
+    }
+    footer .install img 
+    {
+        margin: 10px 0 15px 0;
+    }
+    footer .copyright
+        {
+            width:100%;
+            text-align:center;
+        }
+        
+#page-header 
+{
+    width:1850px;
+    height:330px;
+    background-image: url("img/Purple & Yellow Business LinkedIn Banner.png");
+    background-color: rgb(233, 228, 228);
+    width: 100%;
+    height: 40vh;
+    background-size: cover;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 14px;
+}
+    #page-header h2, #page-header p 
+    {
+        color: white;
+       
+    }
+    #page-header.about-header 
+    {
+        background-image: url("img/crop3.png");
+    }
+#about-head{
+    display:flex;
+    align-items:center;
+}
+    #about-head img 
+    {
+        width: 50%;
+        height: auto;
+    }
+
+    #about-head div
+    {
+        padding-left: 40px;
+    }
+</style>

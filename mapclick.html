@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Moisture Visualization</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- Include CSS for Leaflet Control Geocoder -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@1.13.0/dist/Control.Geocoder.css" />
+    <style>
+        /* Set the map's dimensions */
+        #map {
+            height: 600px;
+        }
+#locationInfo {
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin: 10px;
+        text-align: center;
+    }
+    /* Style for the search bar input element */
+    #searchBar {
+        padding: 6px;
+        margin: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 300px;
+    }
+
+    /* Style for the search button */
+    #searchButton {
+        padding: 6px 10px;
+        margin-left: 5px;
+        cursor: pointer;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+    }
+
+    /* Style for the get location data button */
+    #getLocationDataButton {
+        padding: 6px 10px;
+        margin-left: 5px;
+        cursor: pointer;
+        background-color: #28A745;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+    }
+
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="locationInfo">Click on the map or use the search bar to select a location.</div>
+    <!-- Add a search bar input element -->
+    <input id="searchBar" type="text" placeholder="Search for a location">
+    <!-- Add a search button -->
+    <button id="searchButton">Search</button>
+    <!-- Include D3.js from a CDN -->
+    <button id="getLocationDataButton">Get Location Data</button>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- Include Leaflet Control Geocoder -->
+    <script src="https://unpkg.com/leaflet-control-geocoder@1.13.0/dist/Control.Geocoder.js"></script>
+    <script>
+        // Create a Leaflet map
+        const map = L.map('map').setView([0, 0], 2); // Set the initial view
+
+        // Add a base map layer (e.g., OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Create a function to handle map clicks
+        function handleMapClick(event) {
+            const latitude = event.latlng.lat;
+            const longitude = event.latlng.lng;
+
+            // Update the HTML element with latitude and longitude
+            document.getElementById('locationInfo').innerHTML = `Latitude: ${latitude.toFixed(6)}, Longitude: ${longitude.toFixed(6)}`;
+        }
+
+        // Add a click event listener to the map
+        map.on('click', handleMapClick);
+
+        // Add a search bar using Leaflet Control Geocoder
+        const searchBar = L.Control.geocoder().addTo(map);
+
+        // Handle the search result and update the map view
+        searchBar.on('markgeocode', function (e) {
+            const latlng = e.geocode.center;
+            const locationName = e.geocode.name;
+
+            // Update the HTML element with location details
+            document.getElementById('locationInfo').innerHTML = `Location: ${locationName}, Latitude: ${latlng.lat.toFixed(6)}, Longitude: ${latlng.lng.toFixed(6)}`;
+
+            // Set the map view to the selected location and zoom in
+            map.setView(latlng, 12); // Adjust the zoom level as needed
+        });
+
+        // Add a click event listener to the search button
+        document.getElementById('searchButton').addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the form submission
+            const searchTerm = document.getElementById('searchBar').value;
+
+            // Perform a geocoding search
+            searchBar.options.geocoder.geocode(searchTerm, function (results) {
+                if (results.length > 0) {
+                    const latlng = results[0].center;
+                    const locationName = results[0].name;
+
+                    // Update the HTML element with location details
+                    document.getElementById('locationInfo').innerHTML = `Location: ${locationName}, Latitude: ${latlng.lat.toFixed(6)}, Longitude: ${latlng.lng.toFixed(6)}`;
+
+                    // Set the map view to the selected location and zoom in
+                    map.setView(latlng, 20); // Adjust the zoom level as needed
+                } else {
+                    // Handle no results found
+                    alert('No results found for the search term.');
+                }
+            });
+        });
+
+        // Rest of your code for loading CSV data and displaying markers...
+
+    </script>
+
+
+    <script>
+        // Function to open the index.html page
+        function openIndexPage() {
+            // Redirect to the index.html page
+            window.location.href = 'http://127.0.0.1:5000';
+        }
+
+        // Add click event listener to the button
+        document.getElementById('getLocationDataButton').addEventListener('click', openIndexPage);
+    </script>
+</body>
+</html>
