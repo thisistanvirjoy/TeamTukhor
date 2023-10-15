@@ -1,77 +1,42 @@
 import pandas as pd
+from sklearn.linear_model import LinearRegression
+import datetime
 
-# Load the datasets
-land_data = pd.read_csv('land_data.csv')
-crop_suitability_data = pd.read_csv('crop_suitability_data.csv')
+# Load your tree canopy data from two CSV files
+data1 = pd.read_csv('data1.csv')
+data2 = pd.read_csv('data2.csv')
 
-# Check if merged_data is empty
-if land_data.empty or crop_suitability_data.empty:
-    print("No valid data. Check your datasets.")
-else:
-    # Define a function to encode categorical variables (Soil_Type in this case)
-    def encode_soil_type(soil_type):
-        if soil_type == 'Sandy':
-            return 0
-        elif soil_type == 'Loamy':
-            return 1
-        elif soil_type == 'Clayey':
-            return 2
-        else:
-            return -1  # Handle unknown categories if needed
+# Merge the two datasets based on a common key (e.g., 'timestamp')
+merged_data = pd.merge(data1, data2, on='timestamp', how='inner')
 
+# Ensure the 'timestamp' column is correctly parsed as datetime
+merged_data['timestamp'] = pd.to_datetime(merged_data['timestamp'])
 
-    # Apply the encoding to the 'Soil_Type' column in land_data
-    land_data['Soil_Type'] = land_data['Soil_Type'].apply(encode_soil_type)
+# Prepare your features and target variable
+X = merged_data[['feature1_x', 'feature2_x', 'feature1_y', 'feature2_y']]  # Use appropriate feature columns
+y = merged_data['target_column_x']  # Replace with your target variable
 
+# Create and train a linear regression model
+model = LinearRegression()
+model.fit(X, y)
 
-    # Define a function to suggest a suitable crop based on land characteristics
-    def suggest_crop(land_characteristics):
-        suitable_crops = []
+# ...
 
-        # Iterate through crop suitability data to find suitable crops
-        for index, crop_data in crop_suitability_data.iterrows():
-            min_temp = crop_data['Min_Temperature']
-            max_temp = crop_data['Max_Temperature']
+# Define the current date and calculate the date 5 years from now
+current_date = datetime.datetime.now()
+future_date = current_date + datetime.timedelta(days=5*365)  # Assuming 365 days per year
 
-            min_rainfall = crop_data['Min_Rainfall']
-            max_rainfall = crop_data['Max_Rainfall']
+# Create a DataFrame for the future prediction
+future_data = pd.DataFrame({'timestamp': [future_date]})
 
-            suitable_soil_types = crop_data['Soil_Type'].split(',')
+# Replace 'feature1_x', 'feature2_x', 'feature1_y', 'feature2_y' with your actual feature names
+future_data['feature1_x'] = 220 # Your feature values for tree canopy data 1
+future_data['feature2_x'] = 180# Your feature values for tree canopy data 1
+future_data['feature1_y'] = 180 # Your feature values for tree canopy data 2
+future_data['feature2_y'] =  160# Your feature values for tree canopy data 2
 
-            if (
-                    min_temp <= land_characteristics['Temperature'] <= max_temp and
-                    min_rainfall <= land_characteristics['Rainfall'] <= max_rainfall and
-                    str(land_characteristics['Soil_Type']) in suitable_soil_types
-            ):
-                suitable_crops.append(crop_data['Crop_Name'])
+# Use the trained model to make predictions for the future
+future_prediction = model.predict(future_data[['feature1_x', 'feature2_x', 'feature1_y', 'feature2_y']])
 
-        return suitable_crops
-
-
-    # Get user input for land characteristics
-    user_temperature = float(input("Enter the land's average temperature (in Celsius): "))
-    user_rainfall = float(input("Enter the land's average annual rainfall (in mm): "))
-    user_soil_type = input("Enter the soil type (Sandy, Loamy, or Clayey): ").strip()
-    user_soil_type = encode_soil_type(user_soil_type)
-
-    # Create a dictionary with user-provided land characteristics
-    user_land_characteristics = {
-        'Temperature': user_temperature,
-        'Rainfall': user_rainfall,
-        'Soil_Type': user_soil_type,
-    }
-
-    # Suggest suitable crops based on user-provided land characteristics
-    suggested_crops = suggest_crop(user_land_characteristics)
-
-    if suggested_crops:
-        print("Suggested Suitable Crops:")
-        for crop in suggested_crops:
-            print(crop)
-    else:
-        print("No suitable crops found for the provided land characteristics.")
-
-# Debugging prints to check values
-print("Land Characteristics:", user_land_characteristics)
-print("Crop Suitability Data:")
-print(crop_suitability_data)
+# Display the predicted result
+print("Predicted tree canopy after 5 years:", future_prediction[0])
