@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Information Dashboard</title>
+    <style>
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, rgba(224, 247, 250, 0.7), rgba(128, 222, 234, 0.7)), url('path-to-your-background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    overflow: hidden; /* Prevent vertical scrolling */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+}
+
+#info-panel {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: #333;
+}
+
+#info-panel h3 {
+    margin: 0;
+    color: #0288d1;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #0288d1;
+    padding-bottom: 10px;
+}
+
+.chart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-height: 600px; /* Adjusted height to fit in view */
+    overflow-y: auto; /* Allow vertical scrolling within the container if needed */
+}
+
+.chart-box {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.chart-box h4 {
+    margin: 0;
+    color: #0288d1;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+canvas {
+    width: 100% !important;
+    height: 250px !important; /* Adjusted height for better visibility */
+}
+
+.chart-values {
+    margin-top: 15px;
+}
+
+.chart-values p {
+    margin: 5px 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.chart-values span {
+    color: #0288d1;
+}
+
+.last-chart-section {
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    margin-top: 20px;
+}
+
+.last-chart-section .chart-box {
+    flex: 10;
+}
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="info-panel">
+            <h3>Place Information Dashboard</h3>
+            <div class="chart-container">
+                <div class="chart-box">
+                    <h4>Temperature & Humidity</h4>
+                    <canvas id="tempHumidityChart"></canvas>
+                    <div class="chart-values">
+                        <p><span id="temp-value">Temperature: N/A</span></p>
+                        <p><span id="humidity-value">Humidity: N/A</span></p>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h4>Soil Moisture & pH</h4>
+                    <canvas id="soilChart"></canvas>
+                    <div class="chart-values">
+                        <p><span id="soil-moisture-value">Soil Moisture: N/A</span></p>
+                        <p><span id="soil-ph-value">Soil pH: N/A</span></p>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h4>Average Rainfall</h4>
+                    <canvas id="rainfallChart"></canvas>
+                    <div class="chart-values">
+                        <p><span id="rainfall-value">Average Rainfall: N/A</span></p>
+                    </div>
+                </div>
+                
+                    <div class="chart-box">
+                        <h4>Flood & Drought Probability</h4>
+                        <canvas id="probabilityChart"></canvas>
+                        <div class="chart-values">
+                            <p><span id="flood-probability-value">Flood Probability: N/A</span></p>
+                            <p><span id="drought-probability-value">Drought Probability: N/A</span></p>
+                        </div>
+                    </div>
+                
+                <div class="chart-box">
+                    <div class="imagechart">
+                        <h4>Most Suitable Crop</h4>
+                        <img src="rice.jpeg" width="400" height="300">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                place: params.get('place')
+            };
+        }
+
+        function displayPlaceInfo(place) {
+            // Mock data for places in Dhaka
+            const mockData = {
+                "National Museum": { temperature: 30, humidity: 80, soilMoisture: 20, soilPh: 6.5, rainfall: 1500, floodProbability: 20, droughtProbability: 10 },
+                "Dhaka University": { temperature: 29, humidity: 75, soilMoisture: 22, soilPh: 6.8, rainfall: 1200, floodProbability: 15, droughtProbability: 12 },
+                "Suhrawardy Udyan": { temperature: 31, humidity: 78, soilMoisture: 18, soilPh: 6.4, rainfall: 1400, floodProbability: 25, droughtProbability: 8 },
+                "Bangladesh Parliament": { temperature: 32, humidity: 82, soilMoisture: 17, soilPh: 6.6, rainfall: 1300, floodProbability: 18, droughtProbability: 14 },
+                "Liberation War Museum": { temperature: 28, humidity: 70, soilMoisture: 25, soilPh: 6.7, rainfall: 1100, floodProbability: 10, droughtProbability: 9 },
+                "Bangladesh National Parliament House": { temperature: 28, humidity: 70, soilMoisture: 25, soilPh: 6.7, rainfall: 1100, floodProbability: 10, droughtProbability: 9 },
+                "Selected Location": { temperature: "N/A", humidity: "N/A", soilMoisture: "N/A", soilPh: "N/A", rainfall: "N/A", floodProbability: "N/A", droughtProbability: "N/A" }
+            };
+
+            const info = mockData[place] || { temperature: "N/A", humidity: "N/A", soilMoisture: "N/A", soilPh: "N/A", rainfall: "N/A", floodProbability: "N/A", droughtProbability: "N/A" };
+
+            new Chart(document.getElementById('tempHumidityChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Temperature', 'Humidity'],
+                    datasets: [{
+                        label: 'Temperature & Humidity',
+                        data: [info.temperature, info.humidity],
+                        backgroundColor: ['#ff8a80', '#80deea'],
+                        borderColor: ['#ff5252', '#03a9f4'],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                borderDash: [5, 5]
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('soilChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Soil Moisture', 'Soil pH'],
+                    datasets: [{
+                        label: 'Soil Moisture & pH',
+                        data: [info.soilMoisture, info.soilPh],
+                        backgroundColor: ['#ffeb3b', '#4caf50'],
+                        borderColor: ['#fbc02d', '#388e3c'],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                borderDash: [5, 5]
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('rainfallChart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Rainfall'],
+                    datasets: [{
+                        label: 'Average Rainfall',
+                        data: [info.rainfall],
+                        backgroundColor: ['linear-gradient(135deg, #0072ff, #00c6ff)'],
+                        borderColor: '#0072ff',
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('probabilityChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: ['Flood Probability', 'Drought Probability'],
+                    datasets: [{
+                        label: 'Flood & Drought Probability',
+                        data: [info.floodProbability, info.droughtProbability],
+                        backgroundColor: ['#f44336', '#9c27b0'],
+                        borderColor: ['#c62828', '#6a1b9a'],
+                        borderWidth: 2,
+                        borderRadius: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                borderDash: [5, 5]
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('temp-value').innerText = 'Temperature: ' + info.temperature + '°C';
+            document.getElementById('humidity-value').innerText = 'Humidity: ' + info.humidity + '%';
+            document.getElementById('soil-moisture-value').innerText = 'Soil Moisture: ' + info.soilMoisture + '%';
+            document.getElementById('soil-ph-value').innerText = 'Soil pH: ' + info.soilPh;
+            document.getElementById('rainfall-value').innerText = 'Average Rainfall: ' + info.rainfall + ' mm';
+            document.getElementById('flood-probability-value').innerText = 'Flood Probability: ' + info.floodProbability + '%';
+            document.getElementById('drought-probability-value').innerText = 'Drought Probability: ' + info.droughtProbability + '%';
+        }
+
+        window.onload = () => {
+            const params = getQueryParams();
+            if (params.place) {
+                displayPlaceInfo(params.place);
+            }
+        };
+    </script>
+</body>
+</html>
